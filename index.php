@@ -1,6 +1,7 @@
 <?php
 
-/* php 7.4.10;
+/* 
+ *php 7.4.10
  *Broadcaster
  *By @K6KKK ~ @GameModSM - @GMbots
 */
@@ -49,12 +50,19 @@ class Colors {
     }
 }
 $print = new Colors();
-function bot($method, $parameters = []) {
-    global $token;
-    $http = http_build_query($parameters);
-    $builded = "https://api.telegram.org/bot" . $token . "/" . $method . "?" . $http;
-    $requset = file_get_contents($builded);
-    return json_decode($requset);
+function bot($method,$datas=[]) {
+	global $token;
+$url = "https://api.telegram.org/bot" . $token ."/" . $method;
+$ch = curl_init();
+curl_setopt($ch,CURLOPT_URL,$url);
+curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+curl_setopt($ch,CURLOPT_POSTFIELDS,$datas);
+$res = curl_exec($ch);
+if(curl_error($ch)) {
+var_dump(curl_error($ch));
+} else {
+return json_decode($res);
+}
 }
 function cin($a) {
     return gmdate("H:i:s", str_replace("-", null, explode(".", ($a - microtime(true))) [0]));
